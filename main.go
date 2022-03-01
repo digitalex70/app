@@ -1,6 +1,7 @@
 package main
 
 import (
+	"app/data"
 	"app/handlers"
 
 	"github.com/digitalex70/celeritas"
@@ -9,6 +10,7 @@ import (
 type application struct {
 	App      *celeritas.Celeritas
 	Handlers *handlers.Handlers
+	Models   data.Models
 }
 
 func main() {

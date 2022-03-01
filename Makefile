@@ -2,18 +2,18 @@ BINARY_NAME=app
 
 build:
 	@echo "Building Celeritas..."
-	@go build -o ./build/bin/${BINARY_NAME} .
+	@go build -o build/bin/${BINARY_NAME} .
 	@echo "Celeritas built!"
 
 run: build
 	@echo "Starting Celeritas..."
-	@./build/bin/${BINARY_NAME} &
+	@ ./build/bin/${BINARY_NAME} &
 	@echo "Celeritas started!"
 
 clean:
 	@echo "Cleaning..."
 	@go clean
-	@rm ./build/bin/${BINARY_NAME}
+	@rm build/bin/${BINARY_NAME}
 	@echo "Cleaned!"
 
 start_compose:
