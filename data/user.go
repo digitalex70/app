@@ -43,9 +43,10 @@ func (u *User) GetByEmail(email string) (*User, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	var token Token
 	collection = upper.Collection(token.Table())
-	res = collection.Find(up.Cond{"user_id =": theUser.Id, "expiry <": time.Now()}).OrderBy("created_at desc")
+	res = collection.Find(up.Cond{"user_id =": theUser.Id, "expiry >": time.Now()}).OrderBy("created_at desc")
 	err = res.One(&token)
 	if err != nil {
 		if err != up.ErrNilRecord && err != up.ErrNoMoreRows {
@@ -65,16 +66,16 @@ func (u *User) Get(id int) (*User, error) {
 		return nil, err
 	}
 
-	var token Token
-	collection = upper.Collection(token.Table())
-	res = collection.Find(up.Cond{"user_id =": theUser.Id, "expiry <": time.Now()}).OrderBy("created_at desc")
-	err = res.One(&token)
-	if err != nil {
-		if err != up.ErrNilRecord && err != up.ErrNoMoreRows {
-			return nil, err
-		}
-	}
-	theUser.Token = token
+	//var token Token
+	//collection = upper.Collection(token.Table())
+	//res = collection.Find(up.Cond{"user_id =": theUser.Id, "expiry >": time.Now()}).OrderBy("created_at desc")
+	//err = res.One(&token)
+	//if err != nil {
+	//	if err != up.ErrNilRecord && err != up.ErrNoMoreRows {
+	//		return nil, err
+	//	}
+	//}
+	//theUser.Token = token
 	return &theUser, err
 }
 
@@ -126,8 +127,8 @@ func (u *User) ResetPassword(id int, password string) error {
 	if err != nil {
 		return err
 	}
-	u.Password = string(newHash)
-	err = user.Update(*u)
+	user.Password = string(newHash)
+	err = user.Update(*user)
 	if err != nil {
 		return err
 	}
